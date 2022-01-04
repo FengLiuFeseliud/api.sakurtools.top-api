@@ -54,9 +54,12 @@
         }
 
         # 检查接口数据输入
-        public function censor($key, $code=4000){
+        public function censor($key, $code=4000, $fun=null){
             if(empty($_REQUEST[$key])){
                 $this -> json([], $code, $key." 不能为空");
+                if($fun != null){
+                    return $fun();
+                }
                 exit();
             }
             return;
@@ -65,7 +68,7 @@
         # 接口输出json
         public function json($data=[], $code=200, $msg="ok"){
             $return_data = [
-                "code" => "404",
+                "code" => 404,
                 "msg" => "not api 没有这个接口",
                 "data" => [],
             ];

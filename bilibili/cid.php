@@ -17,7 +17,7 @@
     $return_data = array();
     foreach($video_data["data"] as $key => $val){
         $return_data[$key]["cid"] = $val["cid"];
-        $return_data[$key]["part"] = $val["part"];
+        $return_data[$key]["title"] = $val["part"];
     }
 
     $link -> json($return_data);

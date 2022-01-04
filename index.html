@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<html>
+
+    <body>
+        <h1>
+            api.sakuratools.top 接口临时文档
+            <h3>
+                <p>本站承诺完全使用本项目的开源代码，不会存储用户的任何信息。</p>
+                <p><a href="https://github.com/FengLiuFeseliud/api.sakurtools.top-api">项目Github</a></p>
+            </h3>
+        </h1>
+
+        <br>
+
+        <h2>
+            0. API错误码
+            <h3>
+                本站 api 返回统一返回以下数据用显示 api 状态<br>
+                <p>
+                    {<br>
+                        "code": api 状态码<br>
+                        "msg": api 信息 错误时可以返回错误信息 <br> 
+                    }<br>
+                    code 错误码<br>
+                    200: api 请求成功(正常) <br>
+                    404: 不存在的 api <br>
+                    4000: 参数格式错误 <br>
+                    4001: cookie 失效<br>
+                    4002: 第三方 api 错误<br>
+                </p><br>
+
+            </h3>
+            <h2>1. 下载直链获取</h2><br>
+            <h3>
+                <p>1.1 bilibili</p>
+                <h3>
+                    <p>
+                        以下接口需要请求时携带b站用户 cookie 才能获取1080画质<br>
+                        使用大会员可以获取更高画质<br>
+                        不携带 cookie 将以不登录情况下获取视频<br>
+                        <br>
+
+                        获取视频 cid(如果有分p包括分p)
+                        <br>
+                        http://api.sakuratools.top/bilibili/cid.php
+                        <br>
+                        请求方式: GET/POST <br>
+                        请求参数: <br>
+                        bvid: 视频 bv 号<br>
+                        <br>
+                        请求返回: <br>
+                        {<br>
+                            "code": api 状态码<br>
+                            "msg": api 信息 错误时可以返回错误信息<br>
+                            "data": { <br>
+                                { <br>
+                                    "cid": 视频分p cid <br>
+                                    "title" 视频分p标题 <br>
+                                } <br>
+                                如有更多分p 全部以上格式返回 <br>
+                            } <br>
+                        } <br><br>
+
+                        获取视频/分p清晰度
+                        <br>
+                        http://api.sakuratools.top/bilibili/quality.php
+                        <br>
+                        请求方式: GET/POST <br>
+                        请求参数: <br>
+                        bvid: 视频 bv 号<br>
+                        cid: 视频/分p cid号 (如果多分p, 填该分p cid)<br>
+                        vip: 用户会员等级, 不填自动获取, 如果知道携带该参数可以加快 api 响应<br>
+                        vip 支持的参数<br>
+                        0: 未登录, 如果只用低画质可以不带 cookie 并且 vip 填0不然会返回未登录<br>
+                        1: 普通用户, 可以获取1080P的画质, 不支持1080P+<br>
+                        2: 大会员, 可以获取1080P以上的画质, 包括4K<br>
+                        <br>
+                        请求返回:<br>
+                        {<br>
+                            "code": api 状态码<br>
+                            "msg": api 信息 错误时可以返回错误信息<br>
+                            "data": { <br>
+                                根据当前会员状态与视频支持画质返回<br>
+                                这里只展示一下数据结构<br>
+                                {<br>
+                                    display_desc: "480P" 当前画质<br>
+                                    format: "flv480" 不明<br>
+                                    new_description: "480P 清晰" 画质说明<br>
+                                    quality: 32 画质码<br>
+                                    superscript: "" 画质说明, 没啥用<br>
+                                }<br>
+                            }<br>
+                        }<br><br>
+
+                        获取视频直链
+                        <br>
+                        http://api.sakuratools.top/bilibili/video.php
+                        <br>
+                        请求方式: GET/POST <br>
+                        请求参数: <br>
+                        bvid: 视频 bv 号<br>
+                        cid: 视频/分p cid号 (如果多分p, 填该分p cid)<br>
+                        qn: 画质码<br>
+                        <br>
+                        请求返回:<br>
+                        {<br>
+                            "code": api 状态码<br>
+                            "msg": api 信息 错误时可以返回错误信息<br>
+                            "data": [<br>
+                                三条直链 后两条为备用<br>
+                            ] <br>
+                        }<br>
+                    </p>
+                </h3>
+                <h3>
+                    <p>python demo:</p>
+                    <p><a href="demo/code/bilibili_api_demo1.py">python demo code</a></p>
+                    <img src="demo/img/bilibili_api_demo1.png", width="800", height="600">
+                </h3>
+            </h3>
+        </h2>
+    </body>
+</html>

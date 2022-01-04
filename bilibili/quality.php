@@ -8,11 +8,11 @@
     if(!(isset($_REQUEST["vip"]))){   
         $user_data = $link -> get("https://api.bilibili.com/x/web-interface/nav");
         if($user_data['code'] == -101){
-            $vip = 0;
-        }else{
-            $vip = $user_data["data"]["vipType"];
-        };
+            $link -> json([], 4001, "b站返回未登录, 请检查cookie...");
+            exit();
+        }
 
+        $vip = $user_data["data"]["vipType"];
     }else{
         $vip = $_REQUEST["vip"];
     }
