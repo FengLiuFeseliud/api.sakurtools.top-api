@@ -1,6 +1,6 @@
 import requests
 
-api = "http://api.sakuratools.top/bilibili"
+api = "https://api.sakuratools.top/bilibili"
 bvid = "BV1oQ4y1q7DA"
 with requests.get(f"{api}/cid.php?bvid={bvid}") as req:
     data = req.json()
