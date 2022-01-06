@@ -2,8 +2,8 @@
     include "../link.php";
 
     $link = new Link($_COOKIE);
-    $link -> censor("bvid");
-    $link -> censor("cid");
+    $bvid = $link -> censor("bvid");
+    $cid = $link -> censor("cid");
 
     if(!(isset($_REQUEST["vip"]))){   
         $user_data = $link -> get("https://api.bilibili.com/x/web-interface/nav");
@@ -18,8 +18,8 @@
     }
 
     $video_data = [
-        "bvid" => $_REQUEST["bvid"],
-        "cid" => $_REQUEST["cid"],
+        "bvid" => $bvid,
+        "cid" => $cid,
         "qn" => 32
     ];
     $video_data = $link -> get("https://api.bilibili.com/x/player/playurl", $video_data);

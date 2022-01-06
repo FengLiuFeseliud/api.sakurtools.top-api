@@ -2,10 +2,10 @@
     include "../link.php";
 
     $link = new Link($_COOKIE);
-    $link -> censor("bvid");
+    $bvid = $link -> censor("bvid");
 
     $post_data = [
-        "bvid" => $_REQUEST["bvid"],
+        "bvid" => $bvid,
         "json" => "json"
     ];
     $video_data = $link -> get("https://api.bilibili.com/x/player/pagelist", $post_data);

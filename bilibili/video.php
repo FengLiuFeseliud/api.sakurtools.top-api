@@ -2,14 +2,14 @@
     include "../link.php";
 
     $link = new Link($_COOKIE);
-    $link -> censor("bvid");
-    $link -> censor("cid");
-    $link -> censor("qn");
+    $bvid = $link -> censor("bvid");
+    $cid = $link -> censor("cid");
+    $qn = $link -> censor("qn");
 
     $video_data = [
-        "bvid" => $_REQUEST["bvid"],
-        "cid" => $_REQUEST["cid"],
-        "qn" => $_REQUEST["qn"]
+        "bvid" => $bvid,
+        "cid" => $cid,
+        "qn" => $qn
     ];
     $video_data = $link -> get("https://api.bilibili.com/x/player/playurl", $video_data);
     

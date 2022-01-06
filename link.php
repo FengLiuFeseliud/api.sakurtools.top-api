@@ -1,15 +1,17 @@
 <?php
-    // error_reporting(0);
+    # error_reporting(0);
 
     class Link{
 
-        public $headers = [
+        private $headers = [
             "cookie" => [],
             "user-agent" => " Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36",
 
         ];
 
         public function __construct($cookie=[]){
+            global $headers;
+
             $fmt_cookie = "";
             foreach($cookie as $key => $val){
                 $fmt_cookie = $fmt_cookie.$key."=".$val."; ";
@@ -53,6 +55,10 @@
             return $data;
         }
 
+        public function set_headers($headers){
+            $this -> $headers = $headers;
+        }
+
         # 检查接口数据输入
         public function censor($key, $code=4000, $fun=null){
             if(empty($_REQUEST[$key])){
@@ -62,26 +68,24 @@
                 }
                 exit();
             }
-            return;
+            return $_REQUEST[$key];
         }
 
         # 接口输出json
         public function json($data=[], $code=200, $msg="ok"){
             $return_data = [
-                "code" => 404,
-                "msg" => "not api 没有这个接口",
-                "data" => [],
+                "code" => $code,
+                "msg" => $msg,
+                "data" => $data,
             ];
 
-            if($data == [] and $code == 200){
-                echo json_encode($return_data);
+            if($code == 404){
+                $return_data["msg"] = "not api 没有这个接口";
+                echo json_encode($return_data, JSON_UNESCAPED_UNICODE);
                 return;
             };
             
-            $return_data["code"] = $code;
-            $return_data["msg"] = $msg;
-            $return_data["data"] = $data;
-            echo json_encode($return_data);
+            echo json_encode($return_data, JSON_UNESCAPED_UNICODE);
             return;
         }
 
