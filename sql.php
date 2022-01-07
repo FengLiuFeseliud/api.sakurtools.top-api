@@ -51,8 +51,10 @@
                 $sql_run = $this -> $sql_link -> query($sql_com);
                 $data = $sql_run -> fetchAll();
             }catch(PDOException $err){
+                $err_code = $err -> getCode();
+                
                 $link_ = new Link();
-                $link_ -> json([], 4003, "api数据库查询失败 错误信息:".$err -> getMessage());
+                $link_ -> json([], 4003, "api数据库查询失败 错误码:".$err_code);
                 exit();
             }
             return $data;

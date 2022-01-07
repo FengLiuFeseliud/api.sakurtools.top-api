@@ -1,7 +1,7 @@
 import requests
 
 data = {
-    "url": "https://www.sakuratools.top/",
+    "url": "https://sakuratools.top",
     "short_url": "/sk",
     "day": 1
 }

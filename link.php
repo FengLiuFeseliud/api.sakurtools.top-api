@@ -20,7 +20,7 @@
         }
         
         # 发送请求
-        private function __link($api, $mode, $data){
+        private function __link($api, $mode, $data, $json){
             $headers = $this -> headers;
 
             $link = curl_init($api);
@@ -38,20 +38,38 @@
                 }
                 curl_setopt($link, CURLOPT_URL, $api.$get_data);
             }
-            $data = curl_exec($link);
-            $data = json_decode($data, true);
+            
+            try{
+                $data = curl_exec($link);
+                if($data == false){
+                    $this -> json([], 4004, "api请求连接失败");
+                    exit();
+                }
+                
+                if($json == true){
+                    $data = json_decode($data, true);
+                }else{
+                    $data = curl_getinfo($link, CURLINFO_HTTP_CODE);
+                }
+
+            }catch(Exception $err){
+                $err_code = $err -> getCode();
+                $this -> json([], 4004, "api请求连接失败 错误码:".$err_code);
+                exit();
+            }
+
             return $data;
         }
 
         # get
-        public function get($api, $data=[]){
-            $data = $this -> __link($api, "get", $data);
+        public function get($api, $data=[], $json=true){
+            $data = $this -> __link($api, "get", $data, $json);
             return $data;
         }
 
         # post
-        public function post($api, $data=[]){
-            $data = $this -> __link($api, "post", $data);
+        public function post($api, $data=[], $json=true){
+            $data = $this -> __link($api, "post", $data, $json);
             return $data;
         }
 
