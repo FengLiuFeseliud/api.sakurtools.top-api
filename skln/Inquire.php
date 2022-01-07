@@ -1,11 +1,23 @@
 <?php
-    include "/web/api/sql";
+    require_once("/web/api/sql.php");
 
     $sql = new Sql("api", "api");
     $link = new Link();
 
-    $url = $link -> censor("url");
+    $short_url = $link -> censor("short_url");
 
-    $url_data = $sql -> read("SELECT * FROM `skln` WHERE short_url = '".$url."'");
+    $url_data = $sql -> read("SELECT * FROM `skln` WHERE short_url = '".$short_url."'");
 
-    $link -> json($url_data);
+    if($url_data == array()){
+        $link -> json([]);
+        exit();
+    }
+
+    $return_data = [];
+    foreach($url_data[0] as $key => $val){
+        if(!is_int($key)){
+            $return_data[$key] = $val;
+        }
+    }
+    
+    $link -> json($return_data);

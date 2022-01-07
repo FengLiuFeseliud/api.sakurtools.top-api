@@ -1,5 +1,5 @@
 <?php
-    include "../sql.php";
+    require_once("/web/api/sql.php");
 
     function set_short_url($str){
         $str = str_ireplace( "\\", "/", $str );

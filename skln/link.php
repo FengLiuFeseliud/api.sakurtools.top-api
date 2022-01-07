@@ -4,12 +4,12 @@
     $sql = new Sql("api", "api");
     $link = new Link();
 
-    $url = $link -> censor("url");
+    $short_url = $link -> censor("short_url");
 
-    $url_data = $sql -> read("SELECT * FROM `skln` WHERE short_url = '".$url."'");
+    $url_data = $sql -> read("SELECT * FROM `skln` WHERE short_url = '".$short_url."'");
     
     if($url_data == array()){
-        header("Location: https://api.skln.xyz/err.html");
+        header("Location: https://api.sakuratools.top/skln/err.html");
         exit();
     }
     
