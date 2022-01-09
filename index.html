@@ -29,12 +29,138 @@
                     4000: 参数格式错误 <br>
                     4001: cookie 失效<br>
                     4002: 第三方 api 错误<br>
+                    4003: api 错误<br>
+                    4004: 参数错误<br>
                 </p><br>
 
             </h3>
-            <h2>1. 下载直链获取</h2><br>
+            <h2>1. 短链接</h2><br>
             <h3>
-                <p>1.1 bilibili</p>
+                <p>1.1 短链接上传</p>
+                <h3>
+                    <p>
+                        本短链接利用了404错误重定向到重定向 api 后301重定向到长链接<br>
+                        可以自定义 skln.xyz/ 后的链接<br>
+                        生成的短链接格式 skln.xyz/ + 自定义值<br>
+                        最多有效天数30天, 过期不会删除直到有人重新上传<br>
+                        <br>
+
+                        短链接上传
+                        <br>
+                        https://api.sakuratools.top/skln/updata.php
+                        <br>
+                        请求方式: GET/POST <br>
+                        请求参数: <br>
+                        url: 长链接<br>
+                        short_url: 短链接值 格式 / + 自定义值<br>
+                        day: 有效天数 最多30天<br>
+                        <br>
+                        请求返回: <br>
+                        {<br>
+                            "code": api 状态码<br>
+                            "msg": api 信息 错误时可以返回错误信息<br>
+                            "data": { <br>
+                                "short_url": 生成的短链接
+                            }<br>
+                        }<br>
+                        
+                    </p>
+                </h3>
+                <h3>
+                    <p>python demo:</p>
+                    <p><a href="demo/code/skln_api_demo1.py">python demo code</a></p>
+                    <img src="demo/img/skln_api_demo1.png", width="800", height="300">
+                </h3>
+                <h3><p>1.2 短链接查询</p></h3>
+                <h3>
+                    <p>
+                        短链接查询
+                        <br>
+                        https://api.sakuratools.top/skln/inquire.php
+                        <br>
+                        请求方式: GET/POST <br>
+                        请求参数: <br>
+                        short_url: 短链接值 不带 skln.xyz 需要/<br>
+                        <br>
+                        请求返回: <br>
+                        {<br>
+                            "code": api 状态码<br>
+                            "msg": api 信息 错误时可以返回错误信息<br>
+                            "data": { <br>
+                                "url": 长链接<br>
+                                "short_url": 短链接值<br>
+                                "time": 创建时间戳<br>
+                                "endtime": 过期时间戳<br>
+                                "day": 有效天数<br>
+                            }<br>
+                        }<br><br>
+
+                        短链接重定向
+                        <br>
+                        https://api.sakuratools.top/skln/link.php
+                        <br>
+                        请求方式: GET/POST <br>
+                        请求参数: <br>
+                        short_url: 短链接值 不带 skln.xyz 需要/<br>
+                        <br>
+                        请求返回: <br>
+                        不返回值重定向至长链接, 效果和短链接一样<br>
+                    </p>
+                </h3>
+                <h3>
+                    <p>
+
+                    </p>
+                </h3>
+            </h3>
+            <h2>2. 下载直链获取</h2><br>
+            <h3>
+                <p>2.1 pixiv</p>
+                <h3>
+                    <p>
+                        抓取于 https://www.vilipix.com/<br>
+                        数据0点更新均晚一天稳定榜单, 不包括r18<br>
+                        一次返回日周月三榜混合数据, 不重复抓取, 过了就没了<br>
+                        重点: 注意下载请求头携带 referer: https://www.vilipix.com/<br>
+                        重点: 务必处理下载时404, 把404图片改成 .png 图片就能正常下载<br>
+                        referer 和处理404都不能少, 没 referer 全部无法下载, 不处理404<br>
+                        无法下载 png 图片<br>
+                        <a href="/demo/exe/dow_pixiv .exe">下载即用, 简单脚本一键下载数据, 保存在脚本目录, 速度很快!!!</a><br>
+                        脚本源码在下面, 完全开源放心使用<br>
+                        <br>
+
+                        每日 日周月三榜混合数据
+                        <br>
+                        https://api.sakuratools.top/pixiv/list.php
+                        <br>
+                        请求方式: GET/POST <br>
+                        请求参数: <br>
+                        shield: 屏蔽标签, 多个用","分割<br>
+                        <br>
+                        请求返回: <br>
+                        {<br>
+                            "code": api 状态码<br>
+                            "msg": api 信息 错误时可以返回错误信息<br>
+                            "data": { <br>
+                                "day": "数据更新日期"<br>
+                                "list": [ <br>
+                                    {<br>
+                                        "id": 图片id<br>
+                                        "url" 图片原图 url<br>
+                                    }<br>
+                                    ...<br>
+                                ]<br>
+                            }<br>
+                        }<br>
+                    </p>
+                    <h3>
+                        <p>python demo:</p>
+                        <P>此处演示代码同脚本, 完全异步, 速度很快</P>
+                        <p><a href="demo/code/pixiv_api_demo1.py">python demo code</a></p>
+                        <img src="demo/img/pixiv_api_demo1.png", width="800", height="900">
+                    </h3>
+                </h3>
+                <h3><p>2.2 bilibili</p></h3>
                 <h3>
                     <p>
                         以下接口需要请求时携带b站用户 cookie 才能获取1080画质<br>

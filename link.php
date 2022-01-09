@@ -80,11 +80,12 @@
         # 检查接口数据输入
         public function censor($key, $code=4000, $fun=null){
             if(empty($_REQUEST[$key])){
-                $this -> json([], $code, $key." 不能为空");
                 if($fun != null){
                     return $fun();
+                }else{
+                    $this -> json([], $code, $key." 不能为空");
+                    exit();
                 }
-                exit();
             }
             return $_REQUEST[$key];
         }
