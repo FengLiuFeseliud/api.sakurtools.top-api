@@ -7,7 +7,12 @@
         $shields = explode(",", $_REQUEST["shield"]);
     }
 
-    $day = date("Ymd", strtotime("-2 day"));
+    if(!(empty($_REQUEST["date"]))){
+        $day = $_REQUEST["date"];
+    }else{
+        $day = date("Ymd", strtotime("-2 day"));
+    }
+
     $data = $sql -> read("SELECT * FROM `".$day."`");
 
     $new_data = array();

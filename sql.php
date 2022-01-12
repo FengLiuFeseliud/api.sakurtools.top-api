@@ -26,10 +26,6 @@
         public function link($user_name, $db_name, $host="127.0.0.1"){
             global $sql_link;
             global $passowd_list;
-            
-            if($sql_link != null){
-                $this -> $sql_link = null;
-            }
 
             $user_passowd = $this -> $passowd_list[$user_name];
             $dsn = "mysql:host=".$host.";dbname=".$db_name;
@@ -51,6 +47,8 @@
                 $sql_run = $this -> $sql_link -> query($sql_com);
                 $data = $sql_run -> fetchAll();
             }catch(PDOException $err){
+                $err_code = $err -> getCode();
+
                 $link_ = new Link();
                 $link_ -> json([], 4003, "api数据库查询失败 错误码:".$err_code);
                 exit();
@@ -77,5 +75,4 @@
                 exit();
             }
         }
-
     }

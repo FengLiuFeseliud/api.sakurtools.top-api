@@ -136,6 +136,7 @@
                         请求方式: GET/POST <br>
                         请求参数: <br>
                         shield: 屏蔽标签, 多个用","分割<br>
+                        date: 指定榜单日期, 可以先用获取今年可用日期列表的接口后从中选<br>
                         <br>
                         请求返回: <br>
                         {<br>
@@ -151,7 +152,43 @@
                                     ...<br>
                                 ]<br>
                             }<br>
-                        }<br>
+                        }<br><br>
+
+                        获取今年可用日期列表
+                        <br>
+                        https://api.sakuratools.top/pixiv/date.php
+                        <br>
+                        请求方式: GET/POST <br>
+                        <br>
+                        请求返回: <br>
+                        {<br>
+                            "code": api 状态码<br>
+                            "msg": api 信息 错误时可以返回错误信息<br>
+                            "data": [
+                                一年榜单日期
+                            ]
+                        }<br><br>
+
+                        从本站日周月三榜中随机图片
+                        <br>
+                        https://api.sakuratools.top/pixiv/random.php
+                        <br>
+                        请求方式: GET/POST <br>
+                        <br>
+                        请求返回: <br>
+                        请求参数: <br>
+                        date: 指定从哪几天随机最多5天, 多个用","分割<br>
+                        默认从今天起的前5天, 可以先用获取今年可用日期列表的接口后从中选<br>
+                        count: 随机多少张返回, 最多100张, 默认10张<br>
+                        <br>
+                        {<br>
+                            "code": api 状态码<br>
+                            "msg": api 信息 错误时可以返回错误信息<br>
+                            "data": {
+                                "date" : 从哪几天随机<br>
+                                "list": 随机图片列表<br>
+                            }
+                        }<br><br>
                     </p>
                     <h3>
                         <p>python demo:</p>
