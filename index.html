@@ -1,288 +1,51 @@
 <!DOCTYPE html>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>api文档</title>
+    <link rel="stylesheet" href="https://sakuratools.top/css/index.css">
+    <link rel="stylesheet" href="https://sakuratools.top/css/api-md.css">
+    <link rel="icon" href="https://sakuratools.top/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="https://sakuratools.top/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="top">
+        <a href="https://sakuratools.top" class="title">
+            <span class="title-2">Sakura</span>Tools.top
+        </a>
+        <span class="top-list">
+            <a href="https://api.sakuratools.top">本站api文档</a>
+            <a href="https://skln.xyz">skln</a>
+            <a href="https://github.com/FengLiuFeseliud">github</a>
+            <a href="https://space.bilibili.com/34394509">bilibili</a>
+        </span>
+    </div>
 
-<html>
-
-    <body>
-        <h1>
-            api.sakuratools.top 接口临时文档
-            <h3>
-                <p>本站承诺完全使用本项目的开源代码，不会存储用户的任何信息。</p>
-                <p><a href="https://github.com/FengLiuFeseliud/api.sakurtools.top-api/tree/master">项目Github</a></p>
-            </h3>
-        </h1>
-
-        <br>
-
-        <h2>
-            0. API错误码
-            <h3>
-                本站 api 返回统一返回以下数据用显示 api 状态<br>
-                <p>
-                    {<br>
-                        "code": api 状态码<br>
-                        "msg": api 信息 错误时可以返回错误信息 <br> 
-                    }<br>
-                    code 错误码<br>
-                    200: api 请求成功(正常) <br>
-                    404: 不存在的 api <br>
-                    4000: 参数格式错误 <br>
-                    4001: cookie 失效<br>
-                    4002: 第三方 api 错误<br>
-                    4003: api 错误<br>
-                    4004: 参数错误<br>
-                </p><br>
-
-            </h3>
-            <h2>1. 短链接</h2><br>
-            <h3>
-                <p>1.1 短链接上传</p>
-                <h3>
-                    <p>
-                        本短链接利用了404错误重定向到重定向 api 后301重定向到长链接<br>
-                        可以自定义 skln.xyz/ 后的链接<br>
-                        生成的短链接格式 skln.xyz/ + 自定义值<br>
-                        最多有效天数30天, 过期不会删除直到有人重新上传<br>
-                        <br>
-
-                        短链接上传
-                        <br>
-                        https://api.sakuratools.top/skln/updata.php
-                        <br>
-                        请求方式: GET/POST <br>
-                        请求参数: <br>
-                        url: 长链接<br>
-                        short_url: 短链接值 格式 / + 自定义值<br>
-                        day: 有效天数 最多30天<br>
-                        <br>
-                        请求返回: <br>
-                        {<br>
-                            "code": api 状态码<br>
-                            "msg": api 信息 错误时可以返回错误信息<br>
-                            "data": { <br>
-                                "short_url": 生成的短链接
-                            }<br>
-                        }<br>
-                        
-                    </p>
-                </h3>
-                <h3>
-                    <p>python demo:</p>
-                    <p><a href="demo/code/skln_api_demo1.py">python demo code</a></p>
-                    <img src="demo/img/skln_api_demo1.png", width="800", height="300">
-                </h3>
-                <h3><p>1.2 短链接查询</p></h3>
-                <h3>
-                    <p>
-                        短链接查询
-                        <br>
-                        https://api.sakuratools.top/skln/inquire.php
-                        <br>
-                        请求方式: GET/POST <br>
-                        请求参数: <br>
-                        short_url: 短链接值 不带 skln.xyz 需要/<br>
-                        <br>
-                        请求返回: <br>
-                        {<br>
-                            "code": api 状态码<br>
-                            "msg": api 信息 错误时可以返回错误信息<br>
-                            "data": { <br>
-                                "url": 长链接<br>
-                                "short_url": 短链接值<br>
-                                "time": 创建时间戳<br>
-                                "endtime": 过期时间戳<br>
-                                "day": 有效天数<br>
-                            }<br>
-                        }<br><br>
-
-                        短链接重定向
-                        <br>
-                        https://api.sakuratools.top/skln/link.php
-                        <br>
-                        请求方式: GET/POST <br>
-                        请求参数: <br>
-                        short_url: 短链接值 不带 skln.xyz 需要/<br>
-                        <br>
-                        请求返回: <br>
-                        不返回值重定向至长链接, 效果和短链接一样<br>
-                    </p>
-                </h3>
-                <h3>
-                    <p>
-
-                    </p>
-                </h3>
-            </h3>
-            <h2>2. 下载直链获取</h2><br>
-            <h3>
-                <p>2.1 pixiv</p>
-                <h3>
-                    <p>
-                        抓取于 https://www.vilipix.com/<br>
-                        数据0点更新均晚一天稳定榜单, 不包括r18<br>
-                        一次返回日周月三榜混合数据, 不重复抓取, 过了就没了<br>
-                        重点: 注意下载请求头携带 referer: https://www.vilipix.com/<br>
-                        重点: 务必处理下载时404, 把404图片改成 .png 图片就能正常下载<br>
-                        referer 和处理404都不能少, 没 referer 全部无法下载, 不处理404<br>
-                        无法下载 png 图片<br>
-                        <a href="/demo/exe/dow_pixiv .exe">下载即用, 简单脚本一键下载数据, 保存在脚本目录, 速度很快!!!</a><br>
-                        脚本源码在下面, 完全开源放心使用<br>
-                        <br>
-
-                        每日 日周月三榜混合数据
-                        <br>
-                        https://api.sakuratools.top/pixiv/list.php
-                        <br>
-                        请求方式: GET/POST <br>
-                        请求参数: <br>
-                        shield: 屏蔽标签, 多个用","分割<br>
-                        date: 指定榜单日期, 可以先用获取今年可用日期列表的接口后从中选<br>
-                        <br>
-                        请求返回: <br>
-                        {<br>
-                            "code": api 状态码<br>
-                            "msg": api 信息 错误时可以返回错误信息<br>
-                            "data": { <br>
-                                "day": "数据更新日期"<br>
-                                "list": [ <br>
-                                    {<br>
-                                        "id": 图片id<br>
-                                        "url" 图片原图 url<br>
-                                    }<br>
-                                    ...<br>
-                                ]<br>
-                            }<br>
-                        }<br><br>
-
-                        获取今年可用日期列表
-                        <br>
-                        https://api.sakuratools.top/pixiv/date.php
-                        <br>
-                        请求方式: GET/POST <br>
-                        <br>
-                        请求返回: <br>
-                        {<br>
-                            "code": api 状态码<br>
-                            "msg": api 信息 错误时可以返回错误信息<br>
-                            "data": [
-                                一年榜单日期
-                            ]
-                        }<br><br>
-
-                        从本站日周月三榜中随机图片
-                        <br>
-                        https://api.sakuratools.top/pixiv/random.php
-                        <br>
-                        请求方式: GET/POST <br>
-                        <br>
-                        请求返回: <br>
-                        请求参数: <br>
-                        date: 指定从哪几天随机最多5天, 多个用","分割<br>
-                        默认从今天起的前5天, 可以先用获取今年可用日期列表的接口后从中选<br>
-                        count: 随机多少张返回, 最多100张, 默认10张<br>
-                        <br>
-                        {<br>
-                            "code": api 状态码<br>
-                            "msg": api 信息 错误时可以返回错误信息<br>
-                            "data": {
-                                "date" : 从哪几天随机<br>
-                                "list": 随机图片列表<br>
-                            }
-                        }<br><br>
-                    </p>
-                    <h3>
-                        <p>python demo:</p>
-                        <P>此处演示代码同脚本, 完全异步, 速度很快</P>
-                        <p><a href="demo/code/pixiv_api_demo1.py">python demo code</a></p>
-                        <img src="demo/img/pixiv_api_demo1.png", width="800", height="900">
-                    </h3>
-                </h3>
-                <h3><p>2.2 bilibili</p></h3>
-                <h3>
-                    <p>
-                        以下接口需要请求时携带b站用户 cookie 才能获取1080画质<br>
-                        使用大会员可以获取更高画质<br>
-                        不携带 cookie 将以不登录情况下获取视频<br>
-                        <br>
-
-                        获取视频 cid(如果有分p包括分p)
-                        <br>
-                        https://api.sakuratools.top/bilibili/cid.php
-                        <br>
-                        请求方式: GET/POST <br>
-                        请求参数: <br>
-                        bvid: 视频 bv 号<br>
-                        <br>
-                        请求返回: <br>
-                        {<br>
-                            "code": api 状态码<br>
-                            "msg": api 信息 错误时可以返回错误信息<br>
-                            "data": { <br>
-                                { <br>
-                                    "cid": 视频分p cid <br>
-                                    "title" 视频分p标题 <br>
-                                } <br>
-                                如有更多分p 全部以上格式返回 <br>
-                            } <br>
-                        } <br><br>
-
-                        获取视频/分p清晰度
-                        <br>
-                        https://api.sakuratools.top/bilibili/quality.php
-                        <br>
-                        请求方式: GET/POST <br>
-                        请求参数: <br>
-                        bvid: 视频 bv 号<br>
-                        cid: 视频/分p cid号 (如果多分p, 填该分p cid)<br>
-                        vip: 用户会员等级, 不填自动获取, 如果知道携带该参数可以加快 api 响应<br>
-                        vip 支持的参数<br>
-                        0: 未登录, 如果只用低画质可以不带 cookie 并且 vip 填0不然会返回未登录<br>
-                        1: 普通用户, 可以获取1080P的画质, 不支持1080P+<br>
-                        2: 大会员, 可以获取1080P以上的画质, 包括4K<br>
-                        <br>
-                        请求返回:<br>
-                        {<br>
-                            "code": api 状态码<br>
-                            "msg": api 信息 错误时可以返回错误信息<br>
-                            "data": { <br>
-                                根据当前会员状态与视频支持画质返回<br>
-                                这里只展示一下数据结构<br>
-                                {<br>
-                                    display_desc: "480P" 当前画质<br>
-                                    format: "flv480" 不明<br>
-                                    new_description: "480P 清晰" 画质说明<br>
-                                    quality: 32 画质码<br>
-                                    superscript: "" 画质说明, 没啥用<br>
-                                }<br>
-                            }<br>
-                        }<br><br>
-
-                        获取视频直链
-                        <br>
-                        https://api.sakuratools.top/bilibili/video.php
-                        <br>
-                        请求方式: GET/POST <br>
-                        请求参数: <br>
-                        bvid: 视频 bv 号<br>
-                        cid: 视频/分p cid号 (如果多分p, 填该分p cid)<br>
-                        qn: 画质码<br>
-                        <br>
-                        请求返回:<br>
-                        {<br>
-                            "code": api 状态码<br>
-                            "msg": api 信息 错误时可以返回错误信息<br>
-                            "data": [<br>
-                                三条直链 后两条为备用<br>
-                            ] <br>
-                        }<br>
-                    </p>
-                </h3>
-                <h3>
-                    <p>python demo:</p>
-                    <p><a href="demo/code/bilibili_api_demo1.py">python demo code</a></p>
-                    <img src="demo/img/bilibili_api_demo1.png", width="800", height="600">
-                </h3>
-            </h3>
-        </h2>
-    </body>
+    <div class="api-md-list">
+        <div class="list">
+            <a href="https://api.sakuratools.top">API错误码</a>
+            <a href="https://api.sakuratools.top/skln.html">短链接</a>
+            <a href="https://api.sakuratools.top/pixiv.html">直链获取 - pixiv</a>
+            <a href="https://api.sakuratools.top/bilibili.html">直链获取 - bilibili</a>
+        </div>
+        <div class="text">
+            <span>
+                <h2>API错误码</h2>
+                <h3>本站 api 返回统一返回以下数据用显示 api 状态</h3>
+                <p>code: api 状态码</p>
+                <p>msg: api 信息 错误时可以返回错误信息</p>
+                <h3>code 错误码</h3>
+                <p>200: api 请求成功(正常)</p>
+                <p>404: 不存在的 api</p>
+                <p>4000: 参数格式错误</p>
+                <p>4001: cookie 失效</p>
+                <p>4002: 第三方 api 错误</p>
+                <p>4003: api 错误</p>
+                <p>4004: 参数错误</p>
+            </span>
+        </div>
+    </div>
+</body>
 </html>
