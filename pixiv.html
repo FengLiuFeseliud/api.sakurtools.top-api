@@ -57,6 +57,25 @@
                 <h3>此处演示代码同脚本, 完全异步, 速度很快</h3>
                 <a href="demo/code/pixiv_api_demo1.py"><h3>python demo code</h3></a>
                 <img src="demo/img/pixiv_api_demo1.png", width="800", height="900">
+                <h3>1.2 获取今年可用日期列表</h3>
+                <p>https://api.sakuratools.top/pixiv/date.php</p>
+                <h3>请求方式: GET/POST</h3>
+                <h3>请求返回:</h3>
+                <p>code: api 状态码</p>
+                <p>msg: api 信息 错误时可以返回错误信息</p>
+                <p>data: 一年榜单日期</p>
+                <h3>1.3 从本站日周月三榜中随机图片</h3>
+                <p>https://api.sakuratools.top/pixiv/random.php</p>
+                <h3>请求方式: GET/POST</h3>
+                <h3>请求参数:</h3>
+                <p>date: 指定从哪几天随机最多5天, 多个用","分割</p>
+                <p>默认从今天起的前5天, 可以先用获取今年可用日期列表的接口后从中选</p>
+                <p>count: 随机多少张返回, 最多100张, 默认10张</p>
+                <h3>请求返回:</h3>
+                <p>code: api 状态码</p>
+                <p>msg: api 信息 错误时可以返回错误信息</p>
+                <p>data -> date: 从哪几天随机</p>
+                <p>data -> list: 随机图片列表</p>
             </span>
         </div>
     </div>
