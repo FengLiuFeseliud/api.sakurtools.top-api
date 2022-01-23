@@ -1,6 +1,6 @@
 <?php
     header('Access-Control-Allow-Origin: *');
-    # error_reporting(0);
+    error_reporting(0);
 
     class Link{
 
@@ -80,7 +80,9 @@
 
         # 检查接口数据输入
         public function censor($key, $code=4000, $fun=null){
-            if(empty($_REQUEST[$key])){
+            # 统一处理 xss
+            $val = htmlspecialchars($_REQUEST[$key]);
+            if(empty($val)){
                 if($fun != null){
                     return $fun();
                 }else{
@@ -88,7 +90,7 @@
                     exit();
                 }
             }
-            return $_REQUEST[$key];
+            return $val;
         }
 
         # 接口输出json
@@ -98,12 +100,6 @@
                 "msg" => $msg,
                 "data" => $data,
             ];
-
-            if($code == 404){
-                $return_data["msg"] = "not api 没有这个接口";
-                echo json_encode($return_data, JSON_UNESCAPED_UNICODE);
-                return;
-            };
             
             echo json_encode($return_data, JSON_UNESCAPED_UNICODE);
             return;
