@@ -1,5 +1,7 @@
 <?php
     header('Access-Control-Allow-Origin: *');
+    header("Access-Control-Allow-Headers: x-requested-with,content-type");
+    header("Access-Control-Allow-Methods: OPTIONS,POST,GET");
     error_reporting(0);
 
     class Link{
@@ -82,7 +84,7 @@
         public function censor($key, $code=4000, $fun=null){
             # 统一处理 xss
             $val = htmlspecialchars($_REQUEST[$key]);
-            if(empty($val)){
+            if(empty($val) and $val != "0"){
                 if($fun != null){
                     return $fun();
                 }else{

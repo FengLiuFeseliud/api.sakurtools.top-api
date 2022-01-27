@@ -6,18 +6,20 @@
     $img_path = $link -> censor("path");
     @list($img_path, $set_size)=explode("@", $img_path);
 
-    $Etag = md5($img_path);
-    if(array_key_exists('HTTP_IF_NONE_MATCH', $_SERVER) and $_SERVER['HTTP_IF_NONE_MATCH'] == $Etag){
-        header("HTTP/1.1 304 Not Modified");
-        exit();
-    } else {
-        header("Etag:" . $Etag);
-    }
-    
     $img_file_path = "/web/img/".$img_path;
     @$img_data = getimagesize($img_file_path);
     if($img_data == false){
         $link -> json([], "404", "不存在的图片");
+        exit();
+    }
+
+    $filetime = filectime($img_file_path);
+    $Etag = md5($img_path);
+    # 校验文件修改时间和 Etag 一样返回 304
+    if(array_key_exists('HTTP_IF_NONE_MATCH', $_SERVER) 
+    && $_SERVER['HTTP_IF_NONE_MATCH'] == $Etag
+    && $filetime == $_SERVER['HTTP_IF_MODIFIED_SINCE']){
+        header("HTTP/1.1 304 Not Modified");
         exit();
     }
 
@@ -38,8 +40,10 @@
         $link -> json([], "4003", "打开图片失败");
         exit();
     }
-    
+
     if(empty($set_size)){
+        header("Etag: ".$Etag);
+        header("Last-Modified: ".$filetime);
         header('Content-type:'.$img_type);
         
         if($img_type = "image/png"){
@@ -50,8 +54,6 @@
             imagegif($img);
         }elseif($img_type = "image/webp"){
             imagewebp($img); 
-        }else{
-            $link -> json([], "4003", "不支持的格式");
         }
 
     }else{
@@ -89,6 +91,8 @@
         $new_img = imagecreatetruecolor($new_w, $new_h);
         imagecopyresized($new_img, $img, 0, 0, 0, 0, $new_w, $new_h, $img_size["w"], $img_size["h"]);
 
+        header("Etag: ".$Etag);
+        header("Last-Modified: ".$filetime);
         header('Content-type:image/webp');
         imagewebp($new_img, quality:$quality);
     }

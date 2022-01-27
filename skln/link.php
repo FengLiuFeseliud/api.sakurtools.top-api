@@ -9,7 +9,7 @@
     $url_data = $sql -> read("SELECT * FROM `skln` WHERE short_url = '".$short_url."'");
     
     if($url_data == array()){
-        header("Location: https://sakuratools.top/err/404.html");
+        header("Location: https://sakuratools.top/error");
         exit();
     }
     
